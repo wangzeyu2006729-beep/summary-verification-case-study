@@ -1,0 +1,436 @@
+{
+ "seed": "dsl-case-study-v1-20261008",
+ "method": "Deterministic coverage sampling across native reading strata, D/S quartiles, subset, generator and error types. No pooled binary gold; not population-representative.",
+ "subset_rule": "Pick 10 of the 20 coverage-sampled cases per dataset; not an evaluation split.\n\nKeeps every case that has a manual observation, then fills to 10. Each added\ncase first balances the native reading state, then prefers cases cited in the\n20-case summary, then unseen error types, generators and subsets; ties break by\nthe original fixed selection hash. Cases are renumbered 01-10 by D/S length.",
+ "per_dataset": 10,
+ "datasets": {
+  "AggreFact": {
+   "domain": "新闻：CNN/DM、XSum",
+   "unit": "整篇摘要",
+   "meaning": "label=1 忠实；0 不忠实（二类）",
+   "generator_note": "传统抽取/生成系统与预训练模型：BART、PEGASUS、T5、GPT-2、PtGen、BottomUp 等；Gold 为人工参考摘要（500 条）；missing 为生成器未注明（1,484 条）。29 个原始 generator 值不能解释成 29 个 LLM。",
+   "data_note": "这里使用发布方已经统一过的二值标签；不等于各组成资源的原始错误分类。",
+   "source_url": "https://github.com/Liyan06/AggreFact",
+   "paper_url": "https://aclanthology.org/2023.acl-long.650/",
+   "glossary": [],
+   "raw_records": 10066,
+   "eligible_records": 9566,
+   "excluded": {
+    "human_reference_S": 500
+   }
+  },
+  "RAGTruth-Summary": {
+   "domain": "新闻：CNN/DM、新近新闻",
+   "unit": "错误 span",
+   "meaning": "4 类错误 span；没有标注错误 span 是另一个状态",
+   "generator_note": "6 个 LLM：GPT-4-0613、GPT-3.5-Turbo-0613、Mistral-7B-Instruct、Llama-2-7B/13B/70B-Chat；各 943 条。",
+   "data_note": "只统计 Summary 任务。4 类是错误类型，不是把全部摘要分为四类。",
+   "source_url": "https://github.com/ParticleMedia/RAGTruth",
+   "paper_url": "https://aclanthology.org/2024.acl-long.585/",
+   "glossary": [
+    {
+     "label": "Evident Conflict",
+     "meaning": "明显地与原文冲突",
+     "example": "D：周一开会；S：周二开会。",
+     "note": "明显/隐蔽 × 冲突/无依据；四类标的是错误 span；无错误另算"
+    },
+    {
+     "label": "Subtle Conflict",
+     "meaning": "需要仔细理解才能发现的原文冲突",
+     "example": "D：恢复原有审理；S：开始首次审理。",
+     "note": "明显/隐蔽 × 冲突/无依据；四类标的是错误 span；无错误另算"
+    },
+    {
+     "label": "Evident Baseless Info",
+     "meaning": "明显新增原文没有依据的信息",
+     "example": "D 没提病因；S 指定某种病因。",
+     "note": "明显/隐蔽 × 冲突/无依据；四类标的是错误 span；无错误另算"
+    },
+    {
+     "label": "Subtle Baseless Info",
+     "meaning": "表述自然但包含较隐蔽的无依据信息",
+     "example": "D 只说两人会面；S 加入双方已达成协议的暗示。",
+     "note": "明显/隐蔽 × 冲突/无依据；四类标的是错误 span；无错误另算"
+    }
+   ],
+   "raw_records": 5658,
+   "eligible_records": 5658,
+   "excluded": {}
+  },
+  "UniSumEval": {
+   "domain": "9 域：新闻、生活指南、科幻、医学论文、政府报告、访谈、会议、日常对话、预订对话",
+   "unit": "摘要句子",
+   "meaning": "0 正确；1 有错；另有 NoE + 4 种错误类型",
+   "generator_note": "9 个生成器值：Mixtral-8x7B-Instruct-v0.1、Llama-2-Chat-13B、GPT-3.5-Turbo、GPT-4-0125-Preview、Claude 2.1、BART、T5、Phi-2、Mistral-7B-Instruct-v0.2。",
+   "data_note": "2,025 行含 197 条生成失败（均标为 llama2-chat-13b），非空且有句级标签 1,828 条。当前文件实际有 9 个来源，旧清单的 8 域漏了 MultiWOZ 预订对话。",
+   "source_url": "https://github.com/DISL-Lab/UniSumEval-v1.0",
+   "paper_url": "https://aclanthology.org/2024.findings-emnlp.227/",
+   "glossary": [
+    {
+     "label": "NoE",
+     "meaning": "没有事实错误",
+     "example": "S 中的内容都可由 D 支持。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "OutE",
+     "meaning": "新增无法从原文验证的事实、意见或偏见",
+     "example": "D 介绍图书馆；S 称其首创网上借阅。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "EntE",
+     "meaning": "主体、名字、数字等实体信息错误",
+     "example": "D：甲公司；S：乙公司。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "RelE",
+     "meaning": "动词、介词等造成实体关系错误",
+     "example": "D：位于公园内；S：位于公园旁。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "SenE",
+     "meaning": "整句内容与原文相悖，需要大幅修改或删除",
+     "example": "D：历史建筑；S：一座现代极简建筑。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    }
+   ],
+   "raw_records": 2025,
+   "eligible_records": 1828,
+   "excluded": {
+    "empty_or_placeholder_S": 197
+   }
+  },
+  "TofuEval": {
+   "domain": "MediaSum 访谈、MeetingBank 会议；topic 指定主题",
+   "unit": "摘要句子",
+   "meaning": "yes 忠实；no 不忠实；7 种错误，可多选",
+   "generator_note": "论文生成模型为 GPT-3.5-Turbo、Vicuna-7B、WizardLM-7B/13B/30B。当前发布文件以 model_A–E 匿名，且不同 topic 的顺序会打乱，不能固定映射；另有 Model-Extra，第六个生成器身份未核实。",
+   "data_note": "输入含 topic。统计的 D 长度不含 topic；七种错误类型不是七个互斥正负类别。",
+   "source_url": "https://github.com/amazon-science/tofueval",
+   "paper_url": "https://aclanthology.org/2024.naacl-long.251/",
+   "glossary": [
+    {
+     "label": "Extrinsic Information",
+     "meaning": "新增无法从原文验证的信息；日常常识按作者规则可例外",
+     "example": "D 没提改革要求；S 称总统要求改革。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "Mis-Referencing",
+     "meaning": "事件/属性存在于原文，但被归到错误的人或实体",
+     "example": "D：新机型超支；S：旧机型超支。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "Stating Opinion as Fact",
+     "meaning": "把某人的意见或判断写成既定事实",
+     "example": "D：甲认为应干预；S：干预是必要的。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "Reasoning Error",
+     "meaning": "基于原文信息作出错误计算、关联或推论",
+     "example": "D：分别 3 万、3 万、4 万；S：共 30 万。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "Tense/Modality Error",
+     "meaning": "过去/未来、进行状态或可能/必须等被改变",
+     "example": "D：可能允许；S：已经允许。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "Contradiction",
+     "meaning": "否定或反义表达造成与原文直接相反的结论",
+     "example": "D：专家并不反对；S：专家反对。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    },
+    {
+     "label": "Nuanced Meaning Shift",
+     "meaning": "近义改写造成细微但真实的语义变化",
+     "example": "D：恢复审理；S：开始审理。",
+     "note": "可在同一条摘要/句子中出现多种错误；不是互斥整篇分类"
+    }
+   ],
+   "raw_records": 1777,
+   "eligible_records": 1777,
+   "excluded": {}
+  },
+  "DiaSumFact": {
+   "domain": "SAMSum 日常对话、QMSum 会议的相关片段",
+   "unit": "摘要句子中的错误 span",
+   "meaning": "No Error + 6 种错误；可多选；部分错误另标 intrinsic/extrinsic",
+   "generator_note": "6 个系统：BART、PEGASUS、S-BART（structure_aware_bart）、CONDIGSUM、DialogLM-LED、在 SAMSum 微调的 GPT-3 Curie（gpt3_finetune）。",
+   "data_note": "QMSum 的 D 是与 query 相关的片段，不是整场会议。内在/外在只定义于 EntE、PredE、CirE。",
+   "source_url": "https://github.com/731935354/Dia-Sum-Fact",
+   "paper_url": "https://aclanthology.org/2023.acl-long.377/",
+   "glossary": [
+    {
+     "label": "No Error",
+     "meaning": "没有被标出的事实错误",
+     "example": "句子与对话相符。",
+     "note": "六种错误 + No Error；EntE/PredE/CirE 另有 intrinsic（错误片段的词来自 D）/extrinsic（未在 D 出现），其余为 N/A"
+    },
+    {
+     "label": "EntE",
+     "meaning": "语义框架的核心角色或其属性错误，如谁对谁做了什么中的人",
+     "example": "D：甲在机场；S：乙在机场。",
+     "note": "六种错误 + No Error；EntE/PredE/CirE 另有 intrinsic（错误片段的词来自 D）/extrinsic（未在 D 出现），其余为 N/A"
+    },
+    {
+     "label": "PredE",
+     "meaning": "谓词/动作错误",
+     "example": "D：打电话；S：发邮件。",
+     "note": "六种错误 + No Error；EntE/PredE/CirE 另有 intrinsic（错误片段的词来自 D）/extrinsic（未在 D 出现），其余为 N/A"
+    },
+    {
+     "label": "CirE",
+     "meaning": "时间、地点等非核心情境信息错误",
+     "example": "D：机场；S：火车站。",
+     "note": "六种错误 + No Error；EntE/PredE/CirE 另有 intrinsic（错误片段的词来自 D）/extrinsic（未在 D 出现），其余为 N/A"
+    },
+    {
+     "label": "CorefE",
+     "meaning": "代词或指称对象错误，或没有可指向的对象",
+     "example": "S 的‘她’指错了说话人。",
+     "note": "六种错误 + No Error；EntE/PredE/CirE 另有 intrinsic（错误片段的词来自 D）/extrinsic（未在 D 出现），其余为 N/A"
+    },
+    {
+     "label": "LinkE",
+     "meaning": "两项陈述之间的因果、时间等联系错误",
+     "example": "把无关事件用‘因此’连接。",
+     "note": "六种错误 + No Error；EntE/PredE/CirE 另有 intrinsic（错误片段的词来自 D）/extrinsic（未在 D 出现），其余为 N/A"
+    },
+    {
+     "label": "Others",
+     "meaning": "不属于以上五种具体错误的其他错误",
+     "example": "保留发布方解释，不能自行猜细类。",
+     "note": "六种错误 + No Error；EntE/PredE/CirE 另有 intrinsic（错误片段的词来自 D）/extrinsic（未在 D 出现），其余为 N/A"
+    }
+   ],
+   "raw_records": 475,
+   "eligible_records": 475,
+   "excluded": {}
+  },
+  "LongEval": {
+   "domain": "PubMed 科学论文、SQuALITY 小说（部分带问题）",
+   "unit": "细粒度子句/内容单元（FINE）",
+   "meaning": "Yes 被原文支持；No 不被支持（二类单元标签）",
+   "generator_note": "模型输出 80 条：BigBird-PEGASUS、LongT5、BART、BART+DPR 各 20；human 人工参考 40 条。generator 去掉序号前缀后共 5 个来源，而不是旧清单所写的 63 个模型。",
+   "data_note": "当前原始视图只包含 FINE。子句不保证是独立、完备的原子 claim；模型/人工摘要混合。",
+   "source_url": "https://github.com/martiansideofthemoon/longeval-summarization",
+   "paper_url": "https://aclanthology.org/2023.eacl-main.121/",
+   "glossary": [],
+   "raw_records": 120,
+   "eligible_records": 100,
+   "excluded": {
+    "human_reference_S": 20
+   }
+  },
+  "DiverseSumm-LongFormFact": {
+   "domain": "多文档新闻；每组 10 篇报道",
+   "unit": "摘要句子；另有汇总分",
+   "meaning": "faithfulness_sentence=1 支持；0 不支持；faithfulness 是句级标签平均值",
+   "generator_note": "4 个 LLM：LongChat-7B-16K、GPT-4、GPT-3.5-Turbo-16K、Vicuna-7B-v1.3。",
+   "data_note": "3 条 S 仅为 '1.'，计入原始数量和非空长度范围。不能把汇总比例当整篇二值标签。",
+   "source_url": "https://github.com/meetdavidwan/longformfact",
+   "paper_url": "https://aclanthology.org/2025.naacl-long.442/",
+   "glossary": [],
+   "raw_records": 377,
+   "eligible_records": 374,
+   "excluded": {
+    "empty_or_placeholder_S": 3
+   }
+  },
+  "ExtEval": {
+   "domain": "CNN/DM 新闻；抽取式摘要",
+   "unit": "整篇的多个问题字段，部分附句子位置",
+   "meaning": "5 类问题分别 yes/no；yes 表示存在该问题",
+   "generator_note": "16 个抽取系统/设置：BanditSum、BERT-LSTM-PN-RL、HeterGraph、Lead3、MatchSum、MI-unsup、NeuSum、Oracle、Oracle-disco、PacSum-BERT/TFIDF、Refresh、RNN-ext-RL、TextRank、TextRank-ST、HiStruct。无对话式 LLM 生成。",
+   "data_note": "S 是从 D 抽取后组成的摘要；Oracle 是参考导向的抽取设置。5 个错误维度不是五选一。misleading1/2 属同一种问题。",
+   "source_url": "https://github.com/ZhangShiyue/extractive_is_not_faithful",
+   "paper_url": "https://aclanthology.org/2023.acl-long.120/",
+   "glossary": [
+    {
+     "label": "incorrect_coref",
+     "meaning": "抽取后指代对象被误解为另一个实体",
+     "example": "删除上下文后，‘他’看起来指乙，原文实际指甲。",
+     "note": "五个独立 yes/no 问题；yes=存在问题。misleading1/2 是同类问题的两个字段"
+    },
+    {
+     "label": "incomplete_coref",
+     "meaning": "抽取后缺少代词/指称的必要先行词",
+     "example": "摘要出现‘她’，却没有介绍是谁。",
+     "note": "五个独立 yes/no 问题；yes=存在问题。misleading1/2 是同类问题的两个字段"
+    },
+    {
+     "label": "incorrect_discourse",
+     "meaning": "抽取拼接使篇章关系发生错误解释",
+     "example": "拼接后‘因此’指向了不正确的原因。",
+     "note": "五个独立 yes/no 问题；yes=存在问题。misleading1/2 是同类问题的两个字段"
+    },
+    {
+     "label": "incomplete_discourse",
+     "meaning": "保留篇章连接却缺少理解所需的上下文",
+     "example": "只保留‘不过，结果不同’，前面的对比对象被删掉。",
+     "note": "五个独立 yes/no 问题；yes=存在问题。misleading1/2 是同类问题的两个字段"
+    },
+    {
+     "label": "misleading",
+     "meaning": "选择性抽取或上下文缺失使读者形成错误总体印象",
+     "example": "只摘指控，删去已被澄清的后文。",
+     "note": "五个独立 yes/no 问题；yes=存在问题。misleading1/2 是同类问题的两个字段"
+    }
+   ],
+   "raw_records": 1600,
+   "eligible_records": 1600,
+   "excluded": {}
+  },
+  "SummEval": {
+   "domain": "CNN/DM 新闻",
+   "unit": "整篇摘要的量表评分",
+   "meaning": "consistency 1–5；另有 coherence、fluency、relevance 1–5",
+   "generator_note": "16 个系统输出，含 Lead3、NeuSum、BanditSum、RNES、PtGen、FastAbsRL、BottomUp、ImproveAbs、UnifiedExtAbs、ROUGESal（M13）、MultiTask（M14）、ClosedBook、T5、GPT-2、BART、PEGASUS；不是 16 个现代对话 LLM。",
+   "data_note": "这 1,600 条候选 S 都是系统输出；reference 在辅助字段，不作为这里的一条候选 S。量表没有天然正负阈值。",
+   "source_url": "https://github.com/Yale-LILY/SummEval",
+   "paper_url": "https://aclanthology.org/2021.tacl-1.24/",
+   "glossary": [],
+   "raw_records": 1600,
+   "eligible_records": 1600,
+   "excluded": {}
+  },
+  "VeriGray": {
+   "domain": "新闻、维基等短篇来源文本（FaithBench 来源）",
+   "unit": "摘要句子",
+   "meaning": "7 细类：显式支持、隐式支持、矛盾、捏造、外部依赖、歧义、无事实",
+   "generator_note": "FaithBench 的 10 个模型，另加 DeepSeek-V3-0324、Qwen3-8B、GPT-5，共 13 个生成器。",
+   "data_note": "7 个细类可组织为 Faithful / Unfaithful / Not Sure 三个上位组，加单列的 No-Fact；不能把七类直接叫三类或六类。标签大小写合并仅用于本报告计数。",
+   "source_url": "https://huggingface.co/datasets/Ding-Qiang/veri-gray",
+   "paper_url": "https://arxiv.org/abs/2510.21118",
+   "glossary": [
+    {
+     "label": "Explicitly-Supported",
+     "meaning": "D 明确给出语义等价事件/关系；允许同义改写",
+     "example": "D：周一开会；S：会议安排在周一。",
+     "note": "七个句级细类；Faithful={显式,隐式}，Unfaithful={矛盾,捏造}，Not Sure={外部依赖,歧义}，No-Fact 单列"
+    },
+    {
+     "label": "Implicitly-Supported",
+     "meaning": "D 没直接写出同一命题，但仅由 D 就能推得",
+     "example": "D：甲比乙高，乙比丙高；S：甲比丙高。",
+     "note": "七个句级细类；Faithful={显式,隐式}，Unfaithful={矛盾,捏造}，Not Sure={外部依赖,歧义}，No-Fact 单列"
+    },
+    {
+     "label": "Contradicting",
+     "meaning": "D 支持该命题的否定，即与 D 冲突",
+     "example": "D：会议取消；S：会议照常举行。",
+     "note": "七个句级细类；Faithful={显式,隐式}，Unfaithful={矛盾,捏造}，Not Sure={外部依赖,歧义}，No-Fact 单列"
+    },
+    {
+     "label": "Fabricated",
+     "meaning": "D 既不支持也不反驳，且无法由 D 加外部知识获得支持",
+     "example": "凭空编造某人具体的私人经历。",
+     "note": "七个句级细类；Faithful={显式,隐式}，Unfaithful={矛盾,捏造}，Not Sure={外部依赖,歧义}，No-Fact 单列"
+    },
+    {
+     "label": "Out-Dependent",
+     "meaning": "D 独自不足以支持，结合外部知识后才支持",
+     "example": "D 只给城市名；S 添加其所在国家，需要地理知识。",
+     "note": "七个句级细类；Faithful={显式,隐式}，Unfaithful={矛盾,捏造}，Not Sure={外部依赖,歧义}，No-Fact 单列"
+    },
+    {
+     "label": "Ambiguous",
+     "meaning": "语言存在多种合理解释，不同解释对应不同忠实性标签",
+     "example": "代词可指向两个人，分别导致支持与不支持。",
+     "note": "七个句级细类；Faithful={显式,隐式}，Unfaithful={矛盾,捏造}，Not Sure={外部依赖,歧义}，No-Fact 单列"
+    },
+    {
+     "label": "No-Fact",
+     "meaning": "没有需要进行事实核验的命题",
+     "example": "‘希望这能帮到你。’",
+     "note": "七个句级细类；Faithful={显式,隐式}，Unfaithful={矛盾,捏造}，Not Sure={外部依赖,歧义}，No-Fact 单列"
+    }
+   ],
+   "raw_records": 412,
+   "eligible_records": 412,
+   "excluded": {}
+  }
+ },
+ "flags": {
+  "preamble": {
+   "label": "开场白",
+   "definition": "S 以 “Sure!”“Here is/Here's…”“**Summary” 等模型套话开头。"
+  },
+  "meta_ref": {
+   "label": "谈论文本本身",
+   "definition": "S 在描述“这篇文本/文档/摘要”本身，如 “The text is about…”“The summary does not…”“(Note: …)”。"
+  },
+  "incomplete_end": {
+   "label": "结尾不完整",
+   "definition": "S 去掉空白后不以句末标点结束：可能是截断，也可能只是原系统输出没有句号，需要人看。"
+  },
+  "too_short": {
+   "label": "S 极短",
+   "definition": "S 少于 10 个 token。"
+  },
+  "fragment_unit": {
+   "label": "碎片单元",
+   "definition": "句级/子句级标注中有单元少于 3 个词（含被切开的列表序号）。"
+  },
+  "artifact_tokens": {
+   "label": "残留符号",
+   "definition": "S 含 <pad>、<unk>、UNK、-lrb-/-rrb- 等分词或模型残留。"
+  },
+  "repetition": {
+   "label": "重复",
+   "definition": "S 内有完全相同的句子，或同一个 8-gram 出现 3 次及以上。"
+  },
+  "dup_first_last": {
+   "label": "首句=末句",
+   "definition": "DiverseSumm：summary_sentence 的第一句与最后一句完全相同（官方文件即如此，真实首句丢失）。"
+  },
+  "human_ref": {
+   "label": "人工参考摘要",
+   "definition": "生成器名含 human/gold/reference，S 是人写的参考摘要。"
+  },
+  "shared_D": {
+   "label": "同一 D 多个 S",
+   "definition": "本批 200 条里还有别的样本使用同一篇 D（可能跨数据集）。"
+  },
+  "near_dup_docs": {
+   "label": "多文档近似重复",
+   "definition": "多文档 D 中有文章两两 8-gram 重合 ≥ 0.5。"
+  },
+  "source_noise": {
+   "label": "D 含残留",
+   "definition": "D 含 <br />、HTML 实体、â/Ã 等编码乱码或替换符。"
+  },
+  "label_casing": {
+   "label": "标签大小写不一",
+   "definition": "VeriGray：同一类标签有大小写不同的写法。"
+  },
+  "range_mismatch": {
+   "label": "range 对不上",
+   "definition": "VeriGray：句子的 range 字段截出的文字与 text 不一致。"
+  },
+  "annotator_split": {
+   "label": "标注员分歧",
+   "definition": "LongEval 单元票数不一致；SummEval 专家分极差 ≥ 2；ExtEval 两位标注员的 misleading 不同。"
+  },
+  "crowd_expert_gap": {
+   "label": "众包与专家差 ≥ 2",
+   "definition": "SummEval：众包 consistency 均值与专家均值相差 ≥ 2 分。"
+  },
+  "implicit_true": {
+   "label": "D 外为真",
+   "definition": "RAGTruth：有 span 标了 implicit_true（D 没有但现实为真）。"
+  },
+  "out_dependent": {
+   "label": "需外部知识",
+   "definition": "VeriGray：有句子标为 out-dependent（需 D 之外的知识才能支持）。"
+  }
+ }
+}

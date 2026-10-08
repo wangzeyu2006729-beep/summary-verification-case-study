@@ -1,0 +1,386 @@
+{
+ "AggreFact:01": {
+  "tags": [
+   "D 不完整",
+   "D 外为真"
+  ],
+  "note": "S 说签了“two-year”合同。D 只写新合同“ties him to the club until 2019”，“Red Rose”是 Lancashire 的别称。XSum 删掉了原文首句，“two-year”在 D 里找不到，但现实中可能为真。官方标为有错。"
+ },
+ "AggreFact:03": {
+  "tags": [
+   "跨数据集重复"
+  ],
+  "note": "和 SummEval:03 是同一篇 D。AggreFact 收录了 SummEval 再统一二值化。"
+ },
+ "AggreFact:04": {
+  "tags": [
+   "数值推理"
+  ],
+  "note": "S 说领先优势扩大到 5 分、离第四冠只差 3 分。D 写“Dortmund, in second, can cut the gap to five points with a win”，说明现在领先 8 分；D 还写最后 5 轮“need a maximum of 11 points”。要从 D 推算分差才能发现错误。"
+ },
+ "AggreFact:05": {
+  "tags": [
+   "模板/样板句"
+  ],
+  "note": "把网页模板“click here for all the latest arsenal news”抽进了摘要，被标为有错。"
+ },
+ "AggreFact:07": {
+  "tags": [
+   "易核验"
+  ],
+  "note": "三句几乎逐字来自 D 的前几句，字面匹配就能核验。"
+ },
+ "AggreFact:09": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "有 UNK、整段重复，以及“california state university, georgia”这样的拼接错误，是旧模型的退化输出。"
+ },
+ "RAGTruth-Summary:01": {
+  "tags": [
+   "标签与备注不一致"
+  ],
+  "note": "“Both families kept their pregnancies a secret”标为 Evident Conflict，成立（D 里只有 Rademacher 一家保密）。“IVF treatment”标为 Subtle Conflict（D 是 intrauterine insemination），但备注却写“Does not change any factual details”。"
+ },
+ "RAGTruth-Summary:03": {
+  "tags": [
+   "标注偏严",
+   "标注可商榷"
+  ],
+  "note": "法案名少了一个“The”也被标为 Subtle Conflict。“Some Democrats have expressed support for the bill…”整句标为 Evident Baseless，但 D 里众议院版本“passed along with the support of four Democrats”，前半句并非完全无依据；后半句是编的。"
+ },
+ "RAGTruth-Summary:04": {
+  "tags": [
+   "原文噪声"
+  ],
+  "note": "D 读起来像二次改写稿，含“serves as an inspiration to many”这类评价句，S 原样照搬，标为无错。"
+ },
+ "RAGTruth-Summary:06": {
+  "tags": [
+   "D 外为真"
+  ],
+  "note": "“now known as Caitlyn”标了 implicit_true：D 里没有，但现实中为真。"
+ },
+ "RAGTruth-Summary:09": {
+  "tags": [
+   "错误密集"
+  ],
+  "note": "5 个 span，其中 3 处 Evident Conflict：“被迫做清洁工”，D 是放羊；“被骚扰”，D 是被放过；“丈夫被带走”，D 里丈夫当时在外办事。长 LLM 摘要的错误又密又分散。"
+ },
+ "RAGTruth-Summary:10": {
+  "tags": [
+   "D 外为真"
+  ],
+  "note": "“14th Amendment”标了 implicit_true；“Roberts”应为 Kennedy（Evident Conflict）。"
+ },
+ "UniSumEval:02": {
+  "tags": [
+   "标注偏严"
+  ],
+  "note": "“because of a virus”标错成立：Person1 说“it has nothing to do with virus”。“Person1 will look at Person2's computer”也被标为 RelE，但 D 里 Person1 确实提出要看、对方也同意了，这条判断偏严。"
+ },
+ "UniSumEval:04": {
+  "tags": [
+   "生成故障",
+   "错误密集"
+  ],
+  "note": "会议里的程序性闲聊让输出退化成“Speaker 11 says the recording is good”式的流水账，16 句里 13 句被判错。"
+ },
+ "UniSumEval:05": {
+  "tags": [],
+  "note": "和 UniSumEval:06 是同一篇 D：BART 有 2 句错（“Eddie Howe's side remain top”“Ipswich…sit second”），Claude 2.1 全对。"
+ },
+ "UniSumEval:07": {
+  "tags": [
+   "数值推理"
+  ],
+  "note": "“armodafinil had a slightly higher responder rate”：D 是 armodafinil 72.12%、modafinil 74.29%，结论相反。末句“The text is written in a clear and concise manner”是评价，被标为 OutE。"
+ },
+ "UniSumEval:09": {
+  "tags": [
+   "工作量极端",
+   "句子切分错误"
+  ],
+  "note": "S 有 2,830 token、91 句，几乎把整篇 D 改写了一遍，只有 2 句标错。“(ex.”和“pregnancy, lactation).”被切成了两个单元。逐句核验要 91 次。"
+ },
+ "UniSumEval:10": {
+  "tags": [
+   "标注偏宽",
+   "原文噪声"
+  ],
+  "note": "“renaming … to the National Security Space program in 2019”被标为正确。D 写的是“NDAA for FY2019, Congress renamed the EELV to the NSSL program”。D 里还有“â”编码乱码。"
+ },
+ "TofuEval:04": {
+  "tags": [
+   "时态/状态",
+   "标注偏严"
+  ],
+  "note": "“Councilmember Desai entered into the record…”被标为 Tense/Modality：D 里只说他想登记，不清楚是否真的登记了。"
+ },
+ "TofuEval:07": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "模型写出“The summary does not mention Rudy Giuliani”，把自己正在写摘要这件事写进了摘要。"
+ },
+ "TofuEval:08": {
+  "tags": [
+   "跑题/未回答 query"
+  ],
+  "note": "query 是“Bush vs. Clinton Comparisons”，S 写的却是加州毕业考试（Bush 和 Clinton 只出现在 D 的节目预告里）。标签只看事实，不管摘要是否跑题。"
+ },
+ "TofuEval:09": {
+  "tags": [],
+  "note": "和 TofuEval:10 是同一篇 D。model_D 写“the council voted to approve it”，被标为支持。"
+ },
+ "TofuEval:10": {
+  "tags": [
+   "时态/状态",
+   "证据在远处",
+   "原文噪声"
+  ],
+  "note": "“The council will vote”被标为时态错：证据在 D 末尾，“please cast your vote. Speaker 0: Motion case.”（语音识别把 motion carries 识别错了）。“no public comments”被标为矛盾：店主 Andy Carter 在公众发言环节讲了话。“The Good Barn Eatery”来自转写里店主的自述，法定名称是 Toshiko LLC。"
+ },
+ "DiaSumFact:04": {
+  "tags": [
+   "错误密集"
+  ],
+  "note": "DialogLM 的 QMSum 摘要几乎每句都有错，一句常有 2–4 个错误类，解释大多只有 span 和 intrinsic/extrinsic 标记。"
+ },
+ "DiaSumFact:06": {
+  "tags": [
+   "说话人/指代"
+  ],
+  "note": "说话人搞反（EntE：Autumn 应为 Israel），谓词反了（hasn't sewn 应为 has sewn），因果关系是编的（LinkE）。"
+ },
+ "DiaSumFact:07": {
+  "tags": [
+   "原文噪声"
+  ],
+  "note": "标为无错，判断成立。但 D 开头“Ditty: Hello Ditty”和“Inga: Thanks. We are fine.”看起来像是说话人标签贴错了。"
+ },
+ "DiaSumFact:09": {
+  "tags": [
+   "错误密集"
+  ],
+  "note": "5 句全部有错，包括说话人归属（是 user interface 提议的，不是 project manager）。"
+ },
+ "DiaSumFact:10": {
+  "tags": [
+   "query 预设",
+   "跑题/未回答 query"
+  ],
+  "note": "S 照抄了 query 里的“the group decided to incorporate a menu display”。D 里只是 marketing 提议（“I wonder if incorporating that … might be useful”）、其他人附和，却标为 No Error；S 也没有回答“为什么”。"
+ },
+ "LongEval:02": {
+  "tags": [
+   "标注员分歧"
+  ],
+  "note": "三个单元的票分别是 No/Yes/Yes、No/No/Yes、No/Yes/No，没有汇总后的 gold。"
+ },
+ "LongEval:03": {
+  "tags": [
+   "D 不完整"
+  ],
+  "note": "人工参考摘要的背景句 3 票全是 No：pubmed_block 的 D 从论文中段（“descriptive investigation of a cluster…”）开始，没有引言，所以背景信息在 D 里找不到。"
+ },
+ "LongEval:04": {
+  "tags": [
+   "碎片单元"
+  ],
+  "note": "“all patients were subjected to cranial”是半句话，单元本身无法核验。"
+ },
+ "LongEval:05": {
+  "tags": [
+   "碎片单元"
+  ],
+  "note": "“p <unk> 0.001, and”这样的碎片也被当成核验单元。"
+ },
+ "LongEval:07": {
+  "tags": [
+   "错误密集"
+  ],
+  "note": "36 个单元里 33 个有 No 票，小说情节基本是编的。"
+ },
+ "LongEval:08": {
+  "tags": [
+   "碎片单元",
+   "生成故障"
+  ],
+  "note": "一长串“. . . .”也被当成单元，3 票全 No。"
+ },
+ "LongEval:10": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "编出了“human gpcr1, human gpcr2 … gpcr6”这样的列表，3 票全 No。"
+ },
+ "DiverseSumm-LongFormFact:01": {
+  "tags": [
+   "首句被覆盖"
+  ],
+  "note": "S 以“In contrast, several articles…”开头：真实首句丢失，第一句是最后一句的重复（官方文件就如此）。"
+ },
+ "DiverseSumm-LongFormFact:02": {
+  "tags": [],
+  "note": "“from $9.60 to $130”：10 篇都说计划定价约 130 美元、“quadruple the price”，没有一篇出现 9.60 美元。"
+ },
+ "DiverseSumm-LongFormFact:04": {
+  "tags": [
+   "首句被覆盖"
+  ],
+  "note": "核对过编号：“Article 3 … twice in the year 2030”对应 Article 3（第 4 篇），“Article 8 … 13 hours”对应 Article 8，说明编号从 0 开始。第一句与最后一句一字不差。"
+ },
+ "DiverseSumm-LongFormFact:05": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "整个 S 只有“The summary is structured format.”。"
+ },
+ "DiverseSumm-LongFormFact:06": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "有一个只剩“The”的句子。"
+ },
+ "DiverseSumm-LongFormFact:07": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "把提示词模板“```summary: [your summary]`…”原样吐了出来。"
+ },
+ "DiverseSumm-LongFormFact:08": {
+  "tags": [
+   "引申解读",
+   "句子切分错误"
+  ],
+  "note": "10 句里 4 句不支持，多是“This suggests that investors may be awakening…”这类引申；“2.”“3.”“4.”这样的列表序号也被切成了句子。"
+ },
+ "DiverseSumm-LongFormFact:09": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "在“Article 2: * Windows at India's High Commission in”处截断。"
+ },
+ "DiverseSumm-LongFormFact:10": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "陷入“the Dow Jones Industrial Average dropping 384. points”的重复循环。"
+ },
+ "ExtEval:01": {
+  "tags": [
+   "上下文丢失",
+   "说话人/指代"
+  ],
+  "note": "抽出来的“'' he said monday”里的 he，在 D 里指警察局长；句子顺序还让人以为母亲是在儿子转身之后才打他，实际顺序相反。"
+ },
+ "ExtEval:03": {
+  "tags": [
+   "上下文丢失"
+  ],
+  "note": "抽的是子句片段：“and recently told a congressional commission…”没有主语，“she supports the probe and prompted…”把两个不相干的片段接在了一起。"
+ },
+ "ExtEval:06": {
+  "tags": [
+   "上下文丢失"
+  ],
+  "note": "和 :07、:08 是同一篇 D，三个系统都被判 misleading：每句都是真的，放在一起却像是橄榄球员赢了；D 后文写的是职业大胃王 Schuyler 赢了。"
+ },
+ "ExtEval:07": {
+  "tags": [
+   "上下文丢失"
+  ],
+  "note": "同 ExtEval:06：句子都真，组合起来误导。"
+ },
+ "ExtEval:08": {
+  "tags": [
+   "上下文丢失"
+  ],
+  "note": "同 ExtEval:06：句子都真，组合起来误导。"
+ },
+ "ExtEval:10": {
+  "tags": [
+   "标注偏宽"
+  ],
+  "note": "结尾有半个引号，“the death came about”也没说清是谁的死（D 里指长颈鹿），六个字段仍然都是 no。"
+ },
+ "SummEval:03": {
+  "tags": [
+   "跨数据集重复"
+  ],
+  "note": "和 AggreFact:03 是同一篇 D。"
+ },
+ "SummEval:05": {
+  "tags": [
+   "生成故障"
+  ],
+  "note": "句子支离破碎（“sterling says he is the former female companion who has lost the .”），专家全打 1 分，说明分数里混进了流畅度。"
+ },
+ "SummEval:06": {
+  "tags": [
+   "标注员分歧"
+  ],
+  "note": "“wenger does not know if sanchez decided to join”：D 是“delighted that Sanchez decided to join”和“I don't know why he did that”。专家打 [2, 1, 1]，众包打 [5, 5, 5, 5, 5]。"
+ },
+ "SummEval:08": {
+  "tags": [
+   "标注员分歧"
+  ],
+  "note": "专家打 [5, 3, 5]。和 SummEval:06 是同一篇 D。"
+ },
+ "SummEval:09": {
+  "tags": [
+   "模板/样板句"
+  ],
+  "note": "大部分照抄，但把 D 的“was found dead at the end of…”改成了“fell down the cliff at the end of…”，还抄进了求助热线的模板句。专家打 [2, 2, 2]，众包打 4 分。"
+ },
+ "VeriGray:01": {
+  "tags": [],
+  "note": "开场白“Here is a concise summary of the passage:”和第一句合成了一个标注单元，这个单元被标为 contradicting。"
+ },
+ "VeriGray:02": {
+  "tags": [
+   "需外部知识"
+  ],
+  "note": "D 没说 F-16 属于土耳其，要靠维基百科才能确认，标为 out-dependent。"
+ },
+ "VeriGray:03": {
+  "tags": [
+   "歧义"
+  ],
+  "note": "“moved … due to public opposition in 2007”：2007 修饰的是搬迁还是反对，有歧义，标为 ambiguous。"
+ },
+ "VeriGray:05": {
+  "tags": [
+   "自相矛盾"
+  ],
+  "note": "前一句说 Flynn “scored twice”，后一句又说“Flynn's hat-trick”。"
+ },
+ "VeriGray:06": {
+  "tags": [
+   "程度/确定性",
+   "生成故障"
+  ],
+  "note": "“two-hour standoff”，D 写的是“several hours”，标为 fabricated；“from bases in the east”，D 是“from a number of bases”，被认为说过头了。最后一句“President Ash”是截断。"
+ },
+ "VeriGray:08": {
+  "tags": [
+   "需外部知识"
+  ],
+  "note": "“Brexit negotiations, which were expected to begin in 2018”被标为 contradicting，依据是“Formal Brexit negotiations started in 2017”这一 D 之外的事实。"
+ },
+ "VeriGray:09": {
+  "tags": [
+   "句子切分错误"
+  ],
+  "note": "Markdown 标题和列表序号（“**Summary:**”“1.”）被切进了句子单元。"
+ },
+ "VeriGray:10": {
+  "tags": [
+   "标签与备注不一致",
+   "生成故障"
+  ],
+  "note": "在“$220”处截断（D 是 220 billion），却被标为 implicitly-supported；note 里写的是“this caused a clear hallucination”。"
+ }
+}
